@@ -84,27 +84,16 @@
             MouseLeftButtonDown="ToolbarBorder_MouseLeftButtonDown" Cursor="SizeAll">
         <StackPanel Orientation="Vertical">
             <!-- Menu Toggle -->
-            <ToggleButton x:Name="MenuToggle" IsChecked="True" Width="36" Height="36" Background="#444" Foreground="White" Cursor="Hand" Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}" Margin="0,0,0,10"
+            <ToggleButton x:Name="MenuToggle" IsChecked="True" Width="36" Height="36" Background="Transparent" Cursor="Hand" Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}" Margin="0,0,0,10"
                           Checked="MenuToggle_Checked" Unchecked="MenuToggle_Unchecked">
-                <Viewbox Width="18" Height="18">
-                    <Canvas Width="24" Height="24">
-                        <Path Data="M4 5h16M4 12h16M4 19h16" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                    </Canvas>
-                </Viewbox>
+                <Image Source="Assets/pen.png" Width="28" Height="28"/>
             </ToggleButton>
             
             <StackPanel x:Name="ToolsPanel" Orientation="Vertical" RenderTransformOrigin="0.5,0">
                 <StackPanel.LayoutTransform>
                     <ScaleTransform x:Name="ToolsPanelScale" ScaleY="1"/>
                 </StackPanel.LayoutTransform>
-                <Button ToolTip="Cursor (Click-Through)" Click="BtnCursor_Click" Style="{StaticResource Rounded3DButtonStyle}">
-                <Viewbox Width="18" Height="18">
-                    <Canvas Width="24" Height="24">
-                        <Path Data="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                    </Canvas>
-                </Viewbox>
-            </Button>
-            <Button ToolTip="Pen" Click="BtnPen_Click" Style="{StaticResource Rounded3DButtonStyle}">
+                <Button ToolTip="Pen" Click="BtnPen_Click" Style="{StaticResource Rounded3DButtonStyle}">
                 <Viewbox Width="18" Height="18">
                     <Canvas Width="24" Height="24">
                         <Path Data="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>

@@ -17,6 +17,7 @@ namespace EdulinkerPen
         private NotifyIcon? _notifyIcon;
         private readonly UpdateService _updateService = new();
         private UpdateInfo? _pendingUpdate;
+        private System.Windows.Media.Color _lastColor = System.Windows.Media.Colors.Black;
 
         public MainWindow()
         {
@@ -217,15 +218,17 @@ namespace EdulinkerPen
             CustomCursorImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Assets/pen.png"));
             CustomCursorImage.Width = 32;
             CustomCursorImage.Height = 32;
-            
+
             MainCanvas.EditingMode = InkCanvasEditingMode.Ink;
             MainCanvas.DefaultDrawingAttributes.IsHighlighter = false;
+            MainCanvas.DefaultDrawingAttributes.Color = _lastColor;
             MainCanvas.DefaultDrawingAttributes.Width = 4;
             MainCanvas.DefaultDrawingAttributes.Height = 4;
-            
+
             if (_multiTouchManager != null)
             {
                 _multiTouchManager.IsEraserMode = false;
+                _multiTouchManager.CurrentColor = _lastColor;
                 _multiTouchManager.BrushSize = 4;
             }
         }
@@ -271,6 +274,7 @@ namespace EdulinkerPen
 
         public void SetColor(System.Windows.Media.Color color)
         {
+            _lastColor = color;
             MainCanvas.DefaultDrawingAttributes.Color = color;
             if (_multiTouchManager != null)
                 _multiTouchManager.CurrentColor = color;

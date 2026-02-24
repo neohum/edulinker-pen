@@ -7,7 +7,7 @@
         Loaded="Window_Loaded" Closed="Window_Closed">
     
     <Grid Background="Transparent">
-        <InkCanvas x:Name="MainCanvas" Background="rgba(247, 218, 218, 0.96)" 
+        <InkCanvas x:Name="MainCanvas" Background="Transparent" 
                    EditingMode="Ink"
                    TouchDown="MainCanvas_TouchDown"
                    TouchMove="MainCanvas_TouchMove"

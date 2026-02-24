@@ -38,6 +38,8 @@ namespace EdulinkerPen
             if (_isExpanded || ToolsPanelScale == null) return;
             _isExpanded = true;
 
+            _mainWindow.SetPenMode();
+
             var anim = new DoubleAnimation(0, 1, AnimationDuration)
             {
                 EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
@@ -49,6 +51,8 @@ namespace EdulinkerPen
         {
             if (!_isExpanded || ToolsPanelScale == null) return;
             _isExpanded = false;
+
+            _mainWindow.SetCursorMode();
 
             var anim = new DoubleAnimation(1, 0, AnimationDuration)
             {
@@ -75,7 +79,6 @@ namespace EdulinkerPen
             _mainWindow.ShowCustomCursor();
         }
 
-        private void BtnCursor_Click(object sender, RoutedEventArgs e) => _mainWindow.SetCursorMode();
         private void BtnPen_Click(object sender, RoutedEventArgs e) => _mainWindow.SetPenMode();
         private void BtnHighlighter_Click(object sender, RoutedEventArgs e) => _mainWindow.SetHighlighterMode();
         private void BtnEraser_Click(object sender, RoutedEventArgs e) => _mainWindow.SetEraserMode();
