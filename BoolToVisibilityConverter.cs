@@ -9,8 +9,9 @@ namespace EdulinkerPen
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is bool b && b || value is bool? nb && nb == true)
-                return Visibility.Visible;
+            if (value is bool && ((bool)value) == true) return Visibility.Visible;
+            if (value is bool? && ((bool?)value).HasValue && ((bool?)value).Value == true) return Visibility.Visible;
+            
             return Visibility.Collapsed;
         }
 

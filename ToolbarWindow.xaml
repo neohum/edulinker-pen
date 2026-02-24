@@ -84,7 +84,8 @@
             MouseLeftButtonDown="ToolbarBorder_MouseLeftButtonDown" Cursor="SizeAll">
         <StackPanel Orientation="Vertical">
             <!-- Menu Toggle -->
-            <ToggleButton x:Name="MenuToggle" IsChecked="True" Width="36" Height="36" Background="#444" Foreground="White" Cursor="Hand" Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}" Margin="0,0,0,10">
+            <ToggleButton x:Name="MenuToggle" IsChecked="True" Width="36" Height="36" Background="#444" Foreground="White" Cursor="Hand" Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}" Margin="0,0,0,10"
+                          Checked="MenuToggle_Checked" Unchecked="MenuToggle_Unchecked">
                 <Viewbox Width="18" Height="18">
                     <Canvas Width="24" Height="24">
                         <Path Data="M4 5h16M4 12h16M4 19h16" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
@@ -92,7 +93,10 @@
                 </Viewbox>
             </ToggleButton>
             
-            <StackPanel x:Name="ToolsPanel" Orientation="Vertical" Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BoolToVis}}">
+            <StackPanel x:Name="ToolsPanel" Orientation="Vertical" RenderTransformOrigin="0.5,0">
+                <StackPanel.LayoutTransform>
+                    <ScaleTransform x:Name="ToolsPanelScale" ScaleY="1"/>
+                </StackPanel.LayoutTransform>
                 <Button ToolTip="Cursor (Click-Through)" Click="BtnCursor_Click" Style="{StaticResource Rounded3DButtonStyle}">
                 <Viewbox Width="18" Height="18">
                     <Canvas Width="24" Height="24">

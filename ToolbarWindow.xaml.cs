@@ -2,22 +2,59 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace EdulinkerPen
 {
     public partial class ToolbarWindow : Window
     {
         private MainWindow _mainWindow;
+        private bool _isExpanded = true;
+        private static readonly Duration AnimationDuration = new(TimeSpan.FromMilliseconds(250));
 
         public ToolbarWindow(MainWindow mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
             this.Owner = mainWindow;
-            
+
             // Start at the top right of the screen
             this.Left = SystemParameters.PrimaryScreenWidth - this.Width - 20;
             this.Top = 20;
+        }
+
+        private void MenuToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            ExpandToolbar();
+        }
+
+        private void MenuToggle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            CollapseToolbar();
+        }
+
+        private void ExpandToolbar()
+        {
+            if (_isExpanded || ToolsPanelScale == null) return;
+            _isExpanded = true;
+
+            var anim = new DoubleAnimation(0, 1, AnimationDuration)
+            {
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
+            ToolsPanelScale.BeginAnimation(ScaleTransform.ScaleYProperty, anim);
+        }
+
+        private void CollapseToolbar()
+        {
+            if (!_isExpanded || ToolsPanelScale == null) return;
+            _isExpanded = false;
+
+            var anim = new DoubleAnimation(1, 0, AnimationDuration)
+            {
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
+            };
+            ToolsPanelScale.BeginAnimation(ScaleTransform.ScaleYProperty, anim);
         }
 
         private void ToolbarBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
