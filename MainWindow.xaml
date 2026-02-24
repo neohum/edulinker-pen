@@ -8,14 +8,18 @@
     
     <Grid Background="Transparent">
         <InkCanvas x:Name="MainCanvas" Background="#01000000"
-                   EditingMode="Ink"
+                   EditingMode="None"
+                   MouseLeftButtonDown="MainCanvas_MouseLeftButtonDown"
+                   MouseMove="MainCanvas_MouseMove"
+                   MouseLeftButtonUp="MainCanvas_MouseLeftButtonUp"
                    TouchDown="MainCanvas_TouchDown"
                    TouchMove="MainCanvas_TouchMove"
                    TouchUp="MainCanvas_TouchUp"
-                   MouseMove="MainCanvas_MouseMove"
                    MouseEnter="MainCanvas_MouseEnter"
                    MouseLeave="MainCanvas_MouseLeave"/>
-                   
+        <Canvas x:Name="DraftCanvas" IsHitTestVisible="False"/>
+        <Canvas x:Name="ParticleCanvas" IsHitTestVisible="False"/>
+
         <Canvas x:Name="CursorCanvas" IsHitTestVisible="False">
             <Image x:Name="CustomCursorImage" Source="Assets/pen.png" 
                    Width="32" Height="32" Visibility="Hidden" IsHitTestVisible="False"/>

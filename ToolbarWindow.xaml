@@ -9,8 +9,8 @@
     <Window.Resources>
         <!-- Glass Button -->
         <Style x:Key="GlassButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#25FFFFFF"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#184A90E2"/>
+            <Setter Property="Foreground" Value="#333333"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Margin" Value="0,0,0,6"/>
             <Setter Property="Width" Value="44"/>
@@ -21,17 +21,17 @@
                         <Border x:Name="ButtonBorder"
                                 Background="{TemplateBinding Background}"
                                 CornerRadius="10"
-                                BorderBrush="#30FFFFFF"
+                                BorderBrush="#254A90E2"
                                 BorderThickness="1">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#40FFFFFF"/>
-                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#50FFFFFF"/>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#304A90E2"/>
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#504A90E2"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#15FFFFFF"/>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#104A90E2"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -40,8 +40,8 @@
         </Style>
         <!-- Glass Clear Button -->
         <Style x:Key="GlassClearButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#40d9534f"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#25F39C12"/>
+            <Setter Property="Foreground" Value="#333333"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Margin" Value="0,0,0,6"/>
             <Setter Property="Width" Value="44"/>
@@ -52,17 +52,17 @@
                         <Border x:Name="ButtonBorder"
                                 Background="{TemplateBinding Background}"
                                 CornerRadius="10"
-                                BorderBrush="#40d9534f"
+                                BorderBrush="#30F39C12"
                                 BorderThickness="1">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#60d9534f"/>
-                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#80d9534f"/>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#40F39C12"/>
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#60F39C12"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#30d9534f"/>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#18F39C12"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -81,16 +81,16 @@
                         <Border x:Name="ColorBorder"
                                 Background="{TemplateBinding Background}"
                                 CornerRadius="14"
-                                BorderBrush="#40FFFFFF"
+                                BorderBrush="#404A90E2"
                                 BorderThickness="1.5">
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ColorBorder" Property="BorderBrush" Value="#80FFFFFF"/>
+                                <Setter TargetName="ColorBorder" Property="BorderBrush" Value="#704A90E2"/>
                                 <Setter TargetName="ColorBorder" Property="BorderThickness" Value="2"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ColorBorder" Property="BorderBrush" Value="#AAFFFFFF"/>
+                                <Setter TargetName="ColorBorder" Property="BorderBrush" Value="#904A90E2"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -100,12 +100,12 @@
     </Window.Resources>
 
     <Border x:Name="ToolbarBorder" HorizontalAlignment="Center" VerticalAlignment="Top"
-            Margin="10" Background="#B0181825" CornerRadius="16" Padding="12"
-            BorderBrush="#30FFFFFF" BorderThickness="1" MinWidth="72">
+            Margin="10" Background="#E8F0F4FA" CornerRadius="16" Padding="12"
+            BorderBrush="#304A90E2" BorderThickness="1" MinWidth="72">
         <Border.Effect>
-            <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.4" Color="Black"/>
+            <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.15" Color="#4A90E2"/>
         </Border.Effect>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+        <StackPanel x:Name="OuterPanel" Orientation="Vertical" HorizontalAlignment="Center">
             <!-- Menu Icon: click to toggle, drag to move -->
             <Border x:Name="MenuIconBorder" Width="48" Height="48" CornerRadius="12"
                     Background="Transparent" Cursor="Hand" Margin="0,0,0,8"
@@ -120,52 +120,215 @@
                 <StackPanel.LayoutTransform>
                     <ScaleTransform x:Name="ToolsPanelScale" ScaleY="1"/>
                 </StackPanel.LayoutTransform>
-                <Button ToolTip="Pen" Click="BtnPen_Click" Style="{StaticResource GlassButtonStyle}">
+
+                <!-- Pen -->
+                <Button x:Name="BtnPen" ToolTip="Pen (기본/매직펜)" Click="BtnPen_Click" Style="{StaticResource GlassButtonStyle}">
                     <Viewbox Width="22" Height="22">
                         <Canvas Width="24" Height="24">
-                            <Path Data="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            <Path x:Name="PenIconPath" Data="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
                         </Canvas>
                     </Viewbox>
                 </Button>
-                <Button ToolTip="Highlighter" Click="BtnHighlighter_Click" Style="{StaticResource GlassButtonStyle}">
+
+                <!-- Pen Popup (Normal / Magic Petal / Magic Star) -->
+                <Popup x:Name="PenPopup" PlacementTarget="{Binding ElementName=BtnPen}" Placement="Left" StaysOpen="False" AllowsTransparency="True">
+                    <Border Background="#E8F0F4FA" CornerRadius="12" Padding="8" BorderBrush="#304A90E2" BorderThickness="1" Margin="0,0,8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button ToolTip="일반 펜" Tag="Normal" Click="PenType_Click" Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="0">
+                                <Viewbox Width="20" Height="20">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </Button>
+                            <Button ToolTip="매직펜 (벚꽃)" Tag="MagicPetal" Click="PenType_Click" Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="4,0,0,0">
+                                <Ellipse Width="16" Height="16" Fill="#FFB6C1" Stroke="#333333" StrokeThickness="1"/>
+                            </Button>
+                            <Button ToolTip="매직펜 (별빛)" Tag="MagicStar" Click="PenType_Click" Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="4,0,0,0">
+                                <Path Data="M10 2l1.5 4h4l-3.5 2.5 1.5 4L10 10l-3.5 2.5 1.5-4L4.5 6h4z" Fill="#FFD700" Stroke="#333333" StrokeThickness="1" StrokeLineJoin="Round" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Width="16" Height="16"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+                <!-- Highlighter -->
+                <Button x:Name="BtnHighlighter" ToolTip="Highlighter" Click="BtnHighlighter_Click" Style="{StaticResource GlassButtonStyle}">
                     <Viewbox Width="22" Height="22">
                         <Canvas Width="24" Height="24">
-                            <Path Data="m9 11-6 6v3h9l3-3" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                            <Path Data="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            <Path Data="m9 11-6 6v3h9l3-3" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            <Path Data="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
                         </Canvas>
                     </Viewbox>
                 </Button>
-                <Button ToolTip="Eraser" Click="BtnEraser_Click" Style="{StaticResource GlassButtonStyle}">
+
+                <!-- Eraser -->
+                <Button x:Name="BtnEraser" ToolTip="Eraser" Click="BtnEraser_Click" Style="{StaticResource GlassButtonStyle}">
                     <Viewbox Width="22" Height="22">
                         <Canvas Width="24" Height="24">
-                            <Path Data="M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                            <Path Data="m5.082 11.09 8.828 8.828" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            <Path Data="M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            <Path Data="m5.082 11.09 8.828 8.828" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
                         </Canvas>
                     </Viewbox>
                 </Button>
+
+                <!-- Clear All -->
                 <Button ToolTip="Clear All" Click="BtnClear_Click" Style="{StaticResource GlassClearButtonStyle}">
                     <Viewbox Width="22" Height="22">
                         <Canvas Width="24" Height="24">
-                            <Path Data="M3 6h18" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                            <Path Data="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                            <Path Data="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                            <Path Data="M10 11v6" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                            <Path Data="M14 11v6" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            <Path Data="M3 6h18" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            <Path Data="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            <Path Data="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            <Path Data="M10 11v6" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                            <Path Data="M14 11v6" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
                         </Canvas>
                     </Viewbox>
                 </Button>
 
-                <Border Height="1" Background="#30FFFFFF" Margin="0,4,0,8" HorizontalAlignment="Stretch"/>
+                <!-- Brush Size -->
+                <Button x:Name="BtnBrushSize" ToolTip="Brush Size" Click="BtnBrushSize_Click" Style="{StaticResource GlassButtonStyle}">
+                    <Viewbox Width="22" Height="22">
+                        <Canvas Width="24" Height="24">
+                            <Ellipse x:Name="BrushSizeIcon" Canvas.Left="8" Canvas.Top="8" Width="8" Height="8" Fill="#333333"/>
+                        </Canvas>
+                    </Viewbox>
+                </Button>
 
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                    <Button Background="Red" Click="Color_Click" Style="{StaticResource GlassColorStyle}"/>
-                    <Button Background="Lime" Click="Color_Click" Style="{StaticResource GlassColorStyle}"/>
-                    <Button Background="DodgerBlue" Click="Color_Click" Style="{StaticResource GlassColorStyle}"/>
-                    <Button Background="Yellow" Click="Color_Click" Style="{StaticResource GlassColorStyle}"/>
-                    <Button Background="White" Click="Color_Click" Style="{StaticResource GlassColorStyle}"/>
-                </StackPanel>
+                <!-- Brush Size Popup -->
+                <Popup x:Name="BrushSizePopup" PlacementTarget="{Binding ElementName=BtnBrushSize}" Placement="Left" StaysOpen="False" AllowsTransparency="True">
+                    <Border Background="#E8F0F4FA" CornerRadius="12" Padding="8" BorderBrush="#304A90E2" BorderThickness="1" Margin="0,0,8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Tag="2" Click="BrushSize_Click" Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="0">
+                                <Ellipse Width="4" Height="4" Fill="#333333"/>
+                            </Button>
+                            <Button Tag="4" Click="BrushSize_Click" Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="4,0,0,0">
+                                <Ellipse Width="8" Height="8" Fill="#333333"/>
+                            </Button>
+                            <Button Tag="8" Click="BrushSize_Click" Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="4,0,0,0">
+                                <Ellipse Width="14" Height="14" Fill="#333333"/>
+                            </Button>
+                            <Button Tag="12" Click="BrushSize_Click" Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="4,0,0,0">
+                                <Ellipse Width="20" Height="20" Fill="#333333"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Popup>
 
-                <TextBlock Text="제작" FontSize="10" Foreground="#60FFFFFF" Margin="0,10,0,0" HorizontalAlignment="Center" Cursor="Hand" MouseDown="TxtAbout_MouseDown"/>
+                <Border x:Name="Separator1" Height="1" Background="#304A90E2" Margin="0,4,0,8" HorizontalAlignment="Stretch"/>
+
+                <!-- Background -->
+                <Button x:Name="BtnBackground" ToolTip="Background" Click="BtnBackground_Click" Style="{StaticResource GlassButtonStyle}">
+                    <Viewbox Width="22" Height="22">
+                        <Canvas Width="24" Height="24">
+                            <Rectangle x:Name="BgIconRect" Canvas.Left="3" Canvas.Top="3" Width="18" Height="18" Fill="Transparent" Stroke="#333333" StrokeThickness="2" RadiusX="2" RadiusY="2"/>
+                        </Canvas>
+                    </Viewbox>
+                </Button>
+
+                <!-- Background Popup -->
+                <Popup x:Name="BackgroundPopup" PlacementTarget="{Binding ElementName=BtnBackground}" Placement="Left" StaysOpen="False" AllowsTransparency="True">
+                    <Border Background="#E8F0F4FA" CornerRadius="12" Padding="8" BorderBrush="#304A90E2" BorderThickness="1" Margin="0,0,8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button ToolTip="Transparent" Click="BgTransparent_Click" Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="0">
+                                <Viewbox Width="20" Height="20">
+                                    <Canvas Width="24" Height="24">
+                                        <Path Data="M18 6 L6 18" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                        <Path Data="M6 6 L18 18" Stroke="#333333" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </Button>
+                            <Button ToolTip="White" Click="BgWhite_Click" Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="4,0,0,0">
+                                <Rectangle Width="20" Height="20" Fill="White" RadiusX="4" RadiusY="4"/>
+                            </Button>
+                            <Button ToolTip="Black" Click="BgBlack_Click" Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="4,0,0,0">
+                                <Rectangle Width="20" Height="20" Fill="Black" RadiusX="4" RadiusY="4" Stroke="#333333" StrokeThickness="1"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+                <Border x:Name="Separator2" Height="1" Background="#304A90E2" Margin="0,4,0,8" HorizontalAlignment="Stretch"/>
+
+                <!-- Color -->
+                <Button x:Name="BtnColor" ToolTip="색상" Click="BtnColor_Click"
+                        Style="{StaticResource GlassButtonStyle}">
+                    <Ellipse x:Name="ColorIcon" Width="22" Height="22"
+                             Fill="Black" Stroke="#333333" StrokeThickness="1.5"/>
+                </Button>
+
+                <!-- Color Popup -->
+                <Popup x:Name="ColorPopup" PlacementTarget="{Binding ElementName=BtnColor}"
+                       Placement="Left" StaysOpen="False" AllowsTransparency="True">
+                    <Border Background="#E8F0F4FA" CornerRadius="12" Padding="8"
+                            BorderBrush="#304A90E2" BorderThickness="1" Margin="0,0,8,0">
+                        <StackPanel x:Name="ColorPanel" Orientation="Horizontal">
+                            <Button Background="Black" Click="Color_Click" Style="{StaticResource GlassColorStyle}" Margin="0"/>
+                            <Button Background="Red" Click="Color_Click" Style="{StaticResource GlassColorStyle}" Margin="4,0,0,0"/>
+                            <Button Background="Lime" Click="Color_Click" Style="{StaticResource GlassColorStyle}" Margin="4,0,0,0"/>
+                            <Button Background="DodgerBlue" Click="Color_Click" Style="{StaticResource GlassColorStyle}" Margin="4,0,0,0"/>
+                            <Button Background="Yellow" Click="Color_Click" Style="{StaticResource GlassColorStyle}" Margin="4,0,0,0"/>
+                            <Button Background="White" Click="Color_Click" Style="{StaticResource GlassColorStyle}" Margin="4,0,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+                <Border x:Name="Separator3" Height="1" Background="#304A90E2" Margin="0,4,0,8" HorizontalAlignment="Stretch"/>
+
+                <!-- Settings -->
+                <Button x:Name="BtnSettings" ToolTip="설정" Click="BtnSettings_Click"
+                        Style="{StaticResource GlassButtonStyle}">
+                    <Viewbox Width="22" Height="22">
+                        <Canvas Width="24" Height="24">
+                            <Path Data="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"
+                                  Stroke="#333333" StrokeThickness="2"/>
+                            <Path Data="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
+                                  Stroke="#333333" StrokeThickness="2"/>
+                        </Canvas>
+                    </Viewbox>
+                </Button>
+
+                <!-- Settings Popup -->
+                <Popup x:Name="SettingsPopup" PlacementTarget="{Binding ElementName=BtnSettings}"
+                       Placement="Left" StaysOpen="False" AllowsTransparency="True">
+                    <Border Background="#E8F0F4FA" CornerRadius="12" Padding="8"
+                            BorderBrush="#304A90E2" BorderThickness="1" Margin="0,0,8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Vertical -->
+                            <Button ToolTip="세로" Tag="0" Click="LayoutMode_Click"
+                                    Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="0">
+                                <Viewbox Width="20" Height="20">
+                                    <Canvas Width="24" Height="24">
+                                        <Rectangle Canvas.Left="10" Canvas.Top="3" Width="4" Height="18"
+                                                   Fill="#333333" RadiusX="2" RadiusY="2"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </Button>
+                            <!-- Horizontal -->
+                            <Button ToolTip="가로" Tag="1" Click="LayoutMode_Click"
+                                    Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="4,0,0,0">
+                                <Viewbox Width="20" Height="20">
+                                    <Canvas Width="24" Height="24">
+                                        <Rectangle Canvas.Left="3" Canvas.Top="10" Width="18" Height="4"
+                                                   Fill="#333333" RadiusX="2" RadiusY="2"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </Button>
+                            <!-- Both -->
+                            <Button ToolTip="둘 다" Tag="2" Click="LayoutMode_Click"
+                                    Style="{StaticResource GlassButtonStyle}" Width="40" Height="40" Margin="4,0,0,0">
+                                <Viewbox Width="20" Height="20">
+                                    <Canvas Width="24" Height="24">
+                                        <Rectangle Canvas.Left="10" Canvas.Top="3" Width="4" Height="18"
+                                                   Fill="#333333" RadiusX="2" RadiusY="2"/>
+                                        <Rectangle Canvas.Left="3" Canvas.Top="10" Width="18" Height="4"
+                                                   Fill="#333333" RadiusX="2" RadiusY="2"/>
+                                    </Canvas>
+                                </Viewbox>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+                <TextBlock x:Name="TxtAbout" Text="제작" FontSize="10" Foreground="#80333333" Margin="0,10,0,0" HorizontalAlignment="Center" Cursor="Hand" MouseDown="TxtAbout_MouseDown"/>
             </StackPanel>
         </StackPanel>
     </Border>

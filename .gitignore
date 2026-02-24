@@ -1,8 +1,12 @@
 bin/
 obj/
 publish/
+installer/
 node_modules/
 .vs/
+.claude/
 *.user
 *.suo
 *.DotSettings.user
+*.log
+crash*.log

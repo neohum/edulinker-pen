@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,11 +18,46 @@ namespace EdulinkerPen
         private readonly UpdateService _updateService = new();
         private UpdateInfo? _pendingUpdate;
         private System.Windows.Media.Color _lastColor = System.Windows.Media.Colors.Black;
+        private double _lastBrushSize = 4;
+        private ParticleSystem? _particleSystem;
+        private bool _isMagicPenMode = false;
+
+        private static readonly string SettingsDir = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "EdulinkerPen");
+        private static readonly string SettingsFile = System.IO.Path.Combine(SettingsDir, "settings.txt");
+
+        public System.Windows.Media.Color CurrentColor => _lastColor;
 
         public MainWindow()
         {
             InitializeComponent();
             LoadCustomCursor();
+            LoadSettings();
+        }
+
+        private void LoadSettings()
+        {
+            try
+            {
+                if (File.Exists(SettingsFile))
+                {
+                    var hex = File.ReadAllText(SettingsFile).Trim();
+                    if (!string.IsNullOrEmpty(hex))
+                        _lastColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(hex);
+                }
+            }
+            catch { }
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                Directory.CreateDirectory(SettingsDir);
+                File.WriteAllText(SettingsFile, _lastColor.ToString());
+            }
+            catch { }
         }
 
         private void LoadCustomCursor()
@@ -35,7 +70,7 @@ namespace EdulinkerPen
                     _penCursor = new System.Windows.Input.Cursor(path);
                 }
             }
-            catch 
+            catch
             {
                 // Fallback to default if icon fails to load
             }
@@ -48,13 +83,14 @@ namespace EdulinkerPen
             this.Width = SystemParameters.VirtualScreenWidth;
             this.Height = SystemParameters.VirtualScreenHeight;
 
-            _multiTouchManager = new MultiTouchInkManager(MainCanvas);
+            _multiTouchManager = new MultiTouchInkManager(MainCanvas, DraftCanvas);
+            _particleSystem = new ParticleSystem(ParticleCanvas);
             SetPenMode(); // Default to drawing mode
 
             // Launch the floating toolbar
             _toolbar = new ToolbarWindow(this);
             _toolbar.Show();
-            
+
             SetupTrayIcon();
             _ = CheckForUpdateOnStartupAsync();
         }
@@ -152,17 +188,17 @@ namespace EdulinkerPen
         private void SetupTrayIcon()
         {
             _notifyIcon = new NotifyIcon();
-            
-            try 
+
+            try
             {
                 string iconPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "pen.ico");
                 if (File.Exists(iconPath))
                     _notifyIcon.Icon = new System.Drawing.Icon(iconPath);
                 else
                     _notifyIcon.Icon = System.Drawing.SystemIcons.Application;
-            } 
+            }
             catch { _notifyIcon.Icon = System.Drawing.SystemIcons.Application; }
-            
+
             _notifyIcon.Visible = true;
             _notifyIcon.Text = "Edulinker Pen";
             _notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
@@ -181,6 +217,7 @@ namespace EdulinkerPen
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            SaveSettings();
             if (_notifyIcon != null)
             {
                 _notifyIcon.Visible = false;
@@ -191,8 +228,11 @@ namespace EdulinkerPen
 
         public void SetCursorMode()
         {
+            _isMagicPenMode = false;
+            _particleSystem?.Stop();
             Win32Interop.EnableClickThrough(this);
             MainCanvas.IsHitTestVisible = false;
+            MainCanvas.Opacity = 0;
             CustomCursorImage.Visibility = Visibility.Hidden;
         }
 
@@ -211,48 +251,53 @@ namespace EdulinkerPen
 
         public void SetPenMode()
         {
+            _isMagicPenMode = false;
+            _particleSystem?.Stop();
             Win32Interop.DisableClickThrough(this);
             MainCanvas.IsHitTestVisible = true;
+            MainCanvas.Opacity = 1;
             MainCanvas.Cursor = _penCursor ?? System.Windows.Input.Cursors.Pen;
             CustomCursorImage.Visibility = Visibility.Hidden;
 
-            MainCanvas.EditingMode = InkCanvasEditingMode.Ink;
-            MainCanvas.DefaultDrawingAttributes.IsHighlighter = false;
-            MainCanvas.DefaultDrawingAttributes.Color = _lastColor;
-            MainCanvas.DefaultDrawingAttributes.Width = 4;
-            MainCanvas.DefaultDrawingAttributes.Height = 4;
+            MainCanvas.EditingMode = InkCanvasEditingMode.None;
 
             if (_multiTouchManager != null)
             {
                 _multiTouchManager.IsEraserMode = false;
+                _multiTouchManager.IsHighlighter = false;
                 _multiTouchManager.CurrentColor = _lastColor;
-                _multiTouchManager.BrushSize = 4;
+                _multiTouchManager.BrushSize = _lastBrushSize;
             }
         }
 
         public void SetHighlighterMode()
         {
+            _isMagicPenMode = false;
+            _particleSystem?.Stop();
             Win32Interop.DisableClickThrough(this);
             MainCanvas.IsHitTestVisible = true;
+            MainCanvas.Opacity = 1;
             MainCanvas.Cursor = _penCursor ?? System.Windows.Input.Cursors.Pen;
             CustomCursorImage.Visibility = Visibility.Hidden;
 
-            MainCanvas.EditingMode = InkCanvasEditingMode.Ink;
-            MainCanvas.DefaultDrawingAttributes.IsHighlighter = true;
-            MainCanvas.DefaultDrawingAttributes.Width = 20;
-            MainCanvas.DefaultDrawingAttributes.Height = 20;
+            MainCanvas.EditingMode = InkCanvasEditingMode.None;
 
             if (_multiTouchManager != null)
             {
                 _multiTouchManager.IsEraserMode = false;
-                _multiTouchManager.BrushSize = 20;
+                _multiTouchManager.IsHighlighter = true;
+                _multiTouchManager.CurrentColor = _lastColor;
+                _multiTouchManager.BrushSize = _lastBrushSize * 5;
             }
         }
 
         public void SetEraserMode()
         {
+            _isMagicPenMode = false;
+            _particleSystem?.Stop();
             Win32Interop.DisableClickThrough(this);
             MainCanvas.IsHitTestVisible = true;
+            MainCanvas.Opacity = 1;
             MainCanvas.Cursor = System.Windows.Input.Cursors.Cross;
             CustomCursorImage.Visibility = Visibility.Hidden;
 
@@ -264,6 +309,7 @@ namespace EdulinkerPen
         public void ClearCanvas()
         {
             MainCanvas.Strokes.Clear();
+            _particleSystem?.Clear();
         }
 
         public void SetColor(System.Windows.Media.Color color)
@@ -272,34 +318,125 @@ namespace EdulinkerPen
             MainCanvas.DefaultDrawingAttributes.Color = color;
             if (_multiTouchManager != null)
                 _multiTouchManager.CurrentColor = color;
+            SaveSettings();
         }
 
-        private void MainCanvas_TouchDown(object sender, TouchEventArgs e) => _multiTouchManager?.HandleTouchDown(sender, e);
-        private void MainCanvas_TouchMove(object sender, TouchEventArgs e) => _multiTouchManager?.HandleTouchMove(sender, e);
-        private void MainCanvas_TouchUp(object sender, TouchEventArgs e) => _multiTouchManager?.HandleTouchUp(sender, e);
+        public void SetBackground(System.Windows.Media.Color color)
+        {
+            MainCanvas.Background = new SolidColorBrush(color);
+        }
+
+        public void SetBrushSize(double size)
+        {
+            _lastBrushSize = size;
+            if (_multiTouchManager != null)
+            {
+                if (_multiTouchManager.IsHighlighter)
+                    _multiTouchManager.BrushSize = size * 5;
+                else if (!_multiTouchManager.IsEraserMode)
+                    _multiTouchManager.BrushSize = size;
+            }
+        }
+
+        public void SetMagicPenMode()
+        {
+            _isMagicPenMode = true;
+            Win32Interop.DisableClickThrough(this);
+            MainCanvas.IsHitTestVisible = true;
+            MainCanvas.Opacity = 1;
+            MainCanvas.Cursor = _penCursor ?? System.Windows.Input.Cursors.Pen;
+            CustomCursorImage.Visibility = Visibility.Hidden;
+
+            MainCanvas.EditingMode = InkCanvasEditingMode.None;
+
+            if (_particleSystem != null)
+            {
+                _particleSystem.IsEmitting = false;
+                _particleSystem.Start();
+            }
+
+            if (_multiTouchManager != null)
+            {
+                _multiTouchManager.IsEraserMode = false;
+                _multiTouchManager.IsHighlighter = false;
+                _multiTouchManager.CurrentColor = _lastColor;
+                _multiTouchManager.BrushSize = _lastBrushSize;
+            }
+        }
+
+        public void SetMagicPenType(ParticleType type)
+        {
+            if (_particleSystem != null)
+            {
+                _particleSystem.CurrentType = type;
+            }
+        }
+
+        // --- Mouse handlers ---
+
+        private void MainCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_isMagicPenMode && _particleSystem != null)
+            {
+                var pos = e.GetPosition(ParticleCanvas);
+                _particleSystem.SetEmitPosition(pos);
+                _particleSystem.IsEmitting = true;
+            }
+            _multiTouchManager?.HandleMouseDown(sender, e);
+        }
 
         private void MainCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (CustomCursorImage.Visibility == Visibility.Visible)
+            if (_isMagicPenMode && _particleSystem != null && e.LeftButton == MouseButtonState.Pressed)
             {
-                var pos = e.GetPosition(CursorCanvas);
-                // Adjusting the drawn icon so its "tip" (bottom-left) sits at the mouse coordinate
-                Canvas.SetLeft(CustomCursorImage, pos.X);
-                Canvas.SetTop(CustomCursorImage, pos.Y - CustomCursorImage.Height);
+                var pos = e.GetPosition(ParticleCanvas);
+                _particleSystem.SetEmitPosition(pos);
             }
+            _multiTouchManager?.HandleMouseMove(sender, e);
         }
 
-        private void MainCanvas_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        private void MainCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (MainCanvas.Cursor == System.Windows.Input.Cursors.None)
+            if (_isMagicPenMode && _particleSystem != null)
             {
-                CustomCursorImage.Visibility = Visibility.Visible;
+                _particleSystem.IsEmitting = false;
             }
+            _multiTouchManager?.HandleMouseUp(sender, e);
         }
 
-        private void MainCanvas_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        // --- Touch handlers (multi-touch) ---
+
+        private void MainCanvas_TouchDown(object sender, TouchEventArgs e)
         {
-            CustomCursorImage.Visibility = Visibility.Hidden;
+            if (_isMagicPenMode && _particleSystem != null)
+            {
+                var pos = e.GetTouchPoint(ParticleCanvas).Position;
+                _particleSystem.SetEmitPosition(pos);
+                _particleSystem.IsEmitting = true;
+            }
+            _multiTouchManager?.HandleTouchDown(sender, e);
         }
+
+        private void MainCanvas_TouchMove(object sender, TouchEventArgs e)
+        {
+            if (_isMagicPenMode && _particleSystem != null)
+            {
+                var pos = e.GetTouchPoint(ParticleCanvas).Position;
+                _particleSystem.SetEmitPosition(pos);
+            }
+            _multiTouchManager?.HandleTouchMove(sender, e);
+        }
+
+        private void MainCanvas_TouchUp(object sender, TouchEventArgs e)
+        {
+            if (_isMagicPenMode && _particleSystem != null)
+            {
+                _particleSystem.IsEmitting = false;
+            }
+            _multiTouchManager?.HandleTouchUp(sender, e);
+        }
+
+        private void MainCanvas_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e) { }
+        private void MainCanvas_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e) { }
     }
 }
