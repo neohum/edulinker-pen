@@ -213,11 +213,8 @@ namespace EdulinkerPen
         {
             Win32Interop.DisableClickThrough(this);
             MainCanvas.IsHitTestVisible = true;
-            MainCanvas.Cursor = System.Windows.Input.Cursors.None;
-            CustomCursorImage.Visibility = Visibility.Visible;
-            CustomCursorImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Assets/pen.png"));
-            CustomCursorImage.Width = 32;
-            CustomCursorImage.Height = 32;
+            MainCanvas.Cursor = _penCursor ?? System.Windows.Input.Cursors.Pen;
+            CustomCursorImage.Visibility = Visibility.Hidden;
 
             MainCanvas.EditingMode = InkCanvasEditingMode.Ink;
             MainCanvas.DefaultDrawingAttributes.IsHighlighter = false;
@@ -237,11 +234,8 @@ namespace EdulinkerPen
         {
             Win32Interop.DisableClickThrough(this);
             MainCanvas.IsHitTestVisible = true;
-            MainCanvas.Cursor = System.Windows.Input.Cursors.None;
-            CustomCursorImage.Visibility = Visibility.Visible;
-            CustomCursorImage.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/Assets/pen.png"));
-            CustomCursorImage.Width = 32;
-            CustomCursorImage.Height = 32;
+            MainCanvas.Cursor = _penCursor ?? System.Windows.Input.Cursors.Pen;
+            CustomCursorImage.Visibility = Visibility.Hidden;
 
             MainCanvas.EditingMode = InkCanvasEditingMode.Ink;
             MainCanvas.DefaultDrawingAttributes.IsHighlighter = true;

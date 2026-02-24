@@ -10,6 +10,8 @@ namespace EdulinkerPen
     {
         private MainWindow _mainWindow;
         private bool _isExpanded = true;
+        private bool _wasDragged;
+        private System.Windows.Point _dragStartPoint;
         private static readonly Duration AnimationDuration = new(TimeSpan.FromMilliseconds(250));
 
         public ToolbarWindow(MainWindow mainWindow)
@@ -17,21 +19,53 @@ namespace EdulinkerPen
             InitializeComponent();
             _mainWindow = mainWindow;
             this.Owner = mainWindow;
+            this.Loaded += ToolbarWindow_Loaded;
+        }
 
-            // Start at the top right of the screen
-            this.Left = SystemParameters.PrimaryScreenWidth - this.Width - 20;
+        private void ToolbarWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Position at top right after size is known
+            this.Left = SystemParameters.PrimaryScreenWidth - this.ActualWidth - 20;
             this.Top = 20;
+
+            // Prevent toolbar from stealing focus from the main drawing window
+            Win32Interop.MakeNonActivating(this);
         }
 
-        private void MenuToggle_Checked(object sender, RoutedEventArgs e)
+        // --- Menu Icon: click to toggle, drag to move ---
+
+        private void MenuIcon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ExpandToolbar();
+            _dragStartPoint = e.GetPosition(this);
+            _wasDragged = false;
         }
 
-        private void MenuToggle_Unchecked(object sender, RoutedEventArgs e)
+        private void MenuIcon_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            CollapseToolbar();
+            if (e.LeftButton != MouseButtonState.Pressed || _wasDragged) return;
+
+            var pos = e.GetPosition(this);
+            if (System.Math.Abs(pos.X - _dragStartPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                System.Math.Abs(pos.Y - _dragStartPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+            {
+                _wasDragged = true;
+                this.DragMove();
+            }
         }
+
+        private void MenuIcon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (!_wasDragged)
+            {
+                if (_isExpanded)
+                    CollapseToolbar();
+                else
+                    ExpandToolbar();
+            }
+            _wasDragged = false;
+        }
+
+        // --- Expand / Collapse ---
 
         private void ExpandToolbar()
         {
@@ -61,20 +95,7 @@ namespace EdulinkerPen
             ToolsPanelScale.BeginAnimation(ScaleTransform.ScaleYProperty, anim);
         }
 
-        private void ToolbarBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            // Don't start drag when clicking on buttons
-            var source = e.OriginalSource as DependencyObject;
-            while (source != null && source != ToolbarBorder)
-            {
-                if (source is System.Windows.Controls.Button || source is System.Windows.Controls.Primitives.ToggleButton)
-                    return;
-                source = VisualTreeHelper.GetParent(source);
-            }
-
-            if (e.ButtonState == MouseButtonState.Pressed)
-                this.DragMove();
-        }
+        // --- Cursor visibility ---
 
         private void Window_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -85,6 +106,8 @@ namespace EdulinkerPen
         {
             _mainWindow.ShowCustomCursor();
         }
+
+        // --- Tool buttons ---
 
         private void BtnPen_Click(object sender, RoutedEventArgs e) => _mainWindow.SetPenMode();
         private void BtnHighlighter_Click(object sender, RoutedEventArgs e) => _mainWindow.SetHighlighterMode();
