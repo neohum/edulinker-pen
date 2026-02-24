@@ -1,0 +1,24 @@
+﻿<Window x:Class="EdulinkerPen.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Edulinker Pen Canvas" Height="450" Width="800"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Topmost="True" WindowState="Normal" ShowInTaskbar="True"
+        Loaded="Window_Loaded" Closed="Window_Closed">
+    
+    <Grid Background="Transparent">
+        <InkCanvas x:Name="MainCanvas" Background="rgba(247, 218, 218, 0.96)" 
+                   EditingMode="Ink"
+                   TouchDown="MainCanvas_TouchDown"
+                   TouchMove="MainCanvas_TouchMove"
+                   TouchUp="MainCanvas_TouchUp"
+                   MouseMove="MainCanvas_MouseMove"
+                   MouseEnter="MainCanvas_MouseEnter"
+                   MouseLeave="MainCanvas_MouseLeave"/>
+                   
+        <Canvas x:Name="CursorCanvas" IsHitTestVisible="False">
+            <Image x:Name="CustomCursorImage" Source="Assets/pen.png" 
+                   Width="32" Height="32" Visibility="Hidden" IsHitTestVisible="False"/>
+        </Canvas>
+    </Grid>
+</Window>

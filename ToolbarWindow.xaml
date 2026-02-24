@@ -1,0 +1,152 @@
+<Window x:Class="EdulinkerPen.ToolbarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:EdulinkerPen"
+        Title="Edulinker Toolbar" Height="520" Width="76"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Topmost="True" ShowInTaskbar="False"
+        MouseEnter="Window_MouseEnter" MouseLeave="Window_MouseLeave">
+    <Window.Resources>
+        <Style x:Key="Rounded3DButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Width" Value="36"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                BorderBrush="#222"
+                                BorderThickness="0,0,0,3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#555"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#333"/>
+                                <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="0,0,0,0"/>
+                                <Setter TargetName="ButtonBorder" Property="Margin" Value="0,3,0,0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ClearButtonStyle" TargetType="Button" BasedOn="{StaticResource Rounded3DButtonStyle}">
+            <Setter Property="Background" Value="#d9534f"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#e4605e"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#c9302c"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="ColorButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ColorBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="12"
+                                BorderBrush="#222"
+                                BorderThickness="0,0,0,2">
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ColorBorder" Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ColorBorder" Property="BorderThickness" Value="0,0,0,0"/>
+                                <Setter TargetName="ColorBorder" Property="Margin" Value="0,2,0,0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <local:BoolToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
+
+    <Border x:Name="ToolbarBorder" HorizontalAlignment="Right" VerticalAlignment="Top" 
+            Margin="10" Background="#ee222222" CornerRadius="12" Padding="8"
+            MouseLeftButtonDown="ToolbarBorder_MouseLeftButtonDown" Cursor="SizeAll">
+        <StackPanel Orientation="Vertical">
+            <!-- Menu Toggle -->
+            <ToggleButton x:Name="MenuToggle" IsChecked="True" Width="36" Height="36" Background="#444" Foreground="White" Cursor="Hand" Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}" Margin="0,0,0,10">
+                <Viewbox Width="18" Height="18">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M4 5h16M4 12h16M4 19h16" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                    </Canvas>
+                </Viewbox>
+            </ToggleButton>
+            
+            <StackPanel x:Name="ToolsPanel" Orientation="Vertical" Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BoolToVis}}">
+                <Button ToolTip="Cursor (Click-Through)" Click="BtnCursor_Click" Style="{StaticResource Rounded3DButtonStyle}">
+                <Viewbox Width="18" Height="18">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                    </Canvas>
+                </Viewbox>
+            </Button>
+            <Button ToolTip="Pen" Click="BtnPen_Click" Style="{StaticResource Rounded3DButtonStyle}">
+                <Viewbox Width="18" Height="18">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                    </Canvas>
+                </Viewbox>
+            </Button>
+            <Button ToolTip="Highlighter" Click="BtnHighlighter_Click" Style="{StaticResource Rounded3DButtonStyle}">
+                <Viewbox Width="18" Height="18">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="m9 11-6 6v3h9l3-3" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                        <Path Data="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                    </Canvas>
+                </Viewbox>
+            </Button>
+            <Button ToolTip="Eraser" Click="BtnEraser_Click" Style="{StaticResource Rounded3DButtonStyle}">
+                <Viewbox Width="18" Height="18">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                        <Path Data="m5.082 11.09 8.828 8.828" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                    </Canvas>
+                </Viewbox>
+            </Button>
+            <Button ToolTip="Clear All" Click="BtnClear_Click" Style="{StaticResource ClearButtonStyle}">
+                <Viewbox Width="18" Height="18">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M3 6h18" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                        <Path Data="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                        <Path Data="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                        <Path Data="M10 11v6" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                        <Path Data="M14 11v6" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                    </Canvas>
+                </Viewbox>
+            </Button>
+            
+            <Border Height="1" Background="#555" Margin="0,5,0,10" HorizontalAlignment="Stretch"/>
+            
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <Button Background="Red" Click="Color_Click" Style="{StaticResource ColorButtonStyle}"/>
+                <Button Background="Lime" Click="Color_Click" Style="{StaticResource ColorButtonStyle}"/>
+                <Button Background="DodgerBlue" Click="Color_Click" Style="{StaticResource ColorButtonStyle}"/>
+                <Button Background="Yellow" Click="Color_Click" Style="{StaticResource ColorButtonStyle}"/>
+                <Button Background="White" Click="Color_Click" Style="{StaticResource ColorButtonStyle}"/>
+            </StackPanel>
+
+            <TextBlock Text="제작" FontSize="10" Foreground="#888" Margin="0,15,0,0" HorizontalAlignment="Center" Cursor="Hand" MouseDown="TxtAbout_MouseDown"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>
