@@ -63,10 +63,17 @@ namespace EdulinkerPen
 
         private void ToolbarBorder_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ButtonState == MouseButtonState.Pressed)
+            // Don't start drag when clicking on buttons
+            var source = e.OriginalSource as DependencyObject;
+            while (source != null && source != ToolbarBorder)
             {
-                this.DragMove();
+                if (source is System.Windows.Controls.Button || source is System.Windows.Controls.Primitives.ToggleButton)
+                    return;
+                source = VisualTreeHelper.GetParent(source);
             }
+
+            if (e.ButtonState == MouseButtonState.Pressed)
+                this.DragMove();
         }
 
         private void Window_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)

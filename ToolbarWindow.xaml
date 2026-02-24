@@ -7,11 +7,33 @@
         Topmost="True" ShowInTaskbar="False"
         MouseEnter="Window_MouseEnter" MouseLeave="Window_MouseLeave">
     <Window.Resources>
-        <Style x:Key="Rounded3DButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#444"/>
+        <!-- Glass Toggle Button (no triangle) -->
+        <Style x:Key="GlassToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="ToggleBorder" Background="Transparent" CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ToggleBorder" Property="Background" Value="#20FFFFFF"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ToggleBorder" Property="Background" Value="#10FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Glass Button -->
+        <Style x:Key="GlassButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#25FFFFFF"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
             <Setter Property="Width" Value="36"/>
             <Setter Property="Height" Value="36"/>
             <Setter Property="Template">
@@ -19,37 +41,57 @@
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="ButtonBorder"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="8"
-                                BorderBrush="#222"
-                                BorderThickness="0,0,0,3">
+                                CornerRadius="10"
+                                BorderBrush="#30FFFFFF"
+                                BorderThickness="1">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#555"/>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#40FFFFFF"/>
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#50FFFFFF"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ButtonBorder" Property="Background" Value="#333"/>
-                                <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="0,0,0,0"/>
-                                <Setter TargetName="ButtonBorder" Property="Margin" Value="0,3,0,0"/>
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#15FFFFFF"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="ClearButtonStyle" TargetType="Button" BasedOn="{StaticResource Rounded3DButtonStyle}">
-            <Setter Property="Background" Value="#d9534f"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#e4605e"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#c9302c"/>
-                </Trigger>
-            </Style.Triggers>
+        <!-- Glass Clear Button -->
+        <Style x:Key="GlassClearButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#40d9534f"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="Width" Value="36"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="10"
+                                BorderBrush="#40d9534f"
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#60d9534f"/>
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="#80d9534f"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder" Property="Background" Value="#30d9534f"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-        <Style x:Key="ColorButtonStyle" TargetType="Button">
+        <!-- Glass Color Button -->
+        <Style x:Key="GlassColorStyle" TargetType="Button">
             <Setter Property="Width" Value="24"/>
             <Setter Property="Height" Value="24"/>
             <Setter Property="Margin" Value="0,0,0,6"/>
@@ -60,16 +102,16 @@
                         <Border x:Name="ColorBorder"
                                 Background="{TemplateBinding Background}"
                                 CornerRadius="12"
-                                BorderBrush="#222"
-                                BorderThickness="0,0,0,2">
+                                BorderBrush="#40FFFFFF"
+                                BorderThickness="1.5">
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ColorBorder" Property="Opacity" Value="0.8"/>
+                                <Setter TargetName="ColorBorder" Property="BorderBrush" Value="#80FFFFFF"/>
+                                <Setter TargetName="ColorBorder" Property="BorderThickness" Value="2"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="ColorBorder" Property="BorderThickness" Value="0,0,0,0"/>
-                                <Setter TargetName="ColorBorder" Property="Margin" Value="0,2,0,0"/>
+                                <Setter TargetName="ColorBorder" Property="BorderBrush" Value="#AAFFFFFF"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -79,28 +121,32 @@
         <local:BoolToVisibilityConverter x:Key="BoolToVis"/>
     </Window.Resources>
 
-    <Border x:Name="ToolbarBorder" HorizontalAlignment="Right" VerticalAlignment="Top" 
-            Margin="10" Background="#ee222222" CornerRadius="12" Padding="8"
+    <Border x:Name="ToolbarBorder" HorizontalAlignment="Right" VerticalAlignment="Top"
+            Margin="10" Background="#B0181825" CornerRadius="16" Padding="10"
+            BorderBrush="#30FFFFFF" BorderThickness="1"
             MouseLeftButtonDown="ToolbarBorder_MouseLeftButtonDown" Cursor="SizeAll">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.4" Color="Black"/>
+        </Border.Effect>
         <StackPanel Orientation="Vertical">
             <!-- Menu Toggle -->
-            <ToggleButton x:Name="MenuToggle" IsChecked="True" Width="36" Height="36" Background="Transparent" Cursor="Hand" Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}" Margin="0,0,0,10"
+            <ToggleButton x:Name="MenuToggle" IsChecked="True" Width="40" Height="40" Style="{StaticResource GlassToggleStyle}" Margin="0,0,0,8"
                           Checked="MenuToggle_Checked" Unchecked="MenuToggle_Unchecked">
-                <Image Source="Assets/pen.png" Width="28" Height="28"/>
+                <Image Source="Assets/pen.png" Width="30" Height="30"/>
             </ToggleButton>
             
             <StackPanel x:Name="ToolsPanel" Orientation="Vertical" RenderTransformOrigin="0.5,0">
                 <StackPanel.LayoutTransform>
                     <ScaleTransform x:Name="ToolsPanelScale" ScaleY="1"/>
                 </StackPanel.LayoutTransform>
-                <Button ToolTip="Pen" Click="BtnPen_Click" Style="{StaticResource Rounded3DButtonStyle}">
+                <Button ToolTip="Pen" Click="BtnPen_Click" Style="{StaticResource GlassButtonStyle}">
                 <Viewbox Width="18" Height="18">
                     <Canvas Width="24" Height="24">
                         <Path Data="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button ToolTip="Highlighter" Click="BtnHighlighter_Click" Style="{StaticResource Rounded3DButtonStyle}">
+            <Button ToolTip="Highlighter" Click="BtnHighlighter_Click" Style="{StaticResource GlassButtonStyle}">
                 <Viewbox Width="18" Height="18">
                     <Canvas Width="24" Height="24">
                         <Path Data="m9 11-6 6v3h9l3-3" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
@@ -108,7 +154,7 @@
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button ToolTip="Eraser" Click="BtnEraser_Click" Style="{StaticResource Rounded3DButtonStyle}">
+            <Button ToolTip="Eraser" Click="BtnEraser_Click" Style="{StaticResource GlassButtonStyle}">
                 <Viewbox Width="18" Height="18">
                     <Canvas Width="24" Height="24">
                         <Path Data="M21 21H8a2 2 0 0 1-1.42-.587l-3.994-3.999a2 2 0 0 1 0-2.828l10-10a2 2 0 0 1 2.829 0l5.999 6a2 2 0 0 1 0 2.828L12.834 21" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
@@ -116,7 +162,7 @@
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button ToolTip="Clear All" Click="BtnClear_Click" Style="{StaticResource ClearButtonStyle}">
+            <Button ToolTip="Clear All" Click="BtnClear_Click" Style="{StaticResource GlassClearButtonStyle}">
                 <Viewbox Width="18" Height="18">
                     <Canvas Width="24" Height="24">
                         <Path Data="M3 6h18" Stroke="White" StrokeThickness="2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
@@ -128,17 +174,17 @@
                 </Viewbox>
             </Button>
             
-            <Border Height="1" Background="#555" Margin="0,5,0,10" HorizontalAlignment="Stretch"/>
+            <Border Height="1" Background="#30FFFFFF" Margin="0,4,0,8" HorizontalAlignment="Stretch"/>
             
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                <Button Background="Red" Click="Color_Click" Style="{StaticResource ColorButtonStyle}"/>
-                <Button Background="Lime" Click="Color_Click" Style="{StaticResource ColorButtonStyle}"/>
-                <Button Background="DodgerBlue" Click="Color_Click" Style="{StaticResource ColorButtonStyle}"/>
-                <Button Background="Yellow" Click="Color_Click" Style="{StaticResource ColorButtonStyle}"/>
-                <Button Background="White" Click="Color_Click" Style="{StaticResource ColorButtonStyle}"/>
+                <Button Background="Red" Click="Color_Click" Style="{StaticResource GlassColorStyle}"/>
+                <Button Background="Lime" Click="Color_Click" Style="{StaticResource GlassColorStyle}"/>
+                <Button Background="DodgerBlue" Click="Color_Click" Style="{StaticResource GlassColorStyle}"/>
+                <Button Background="Yellow" Click="Color_Click" Style="{StaticResource GlassColorStyle}"/>
+                <Button Background="White" Click="Color_Click" Style="{StaticResource GlassColorStyle}"/>
             </StackPanel>
 
-            <TextBlock Text="제작" FontSize="10" Foreground="#888" Margin="0,15,0,0" HorizontalAlignment="Center" Cursor="Hand" MouseDown="TxtAbout_MouseDown"/>
+            <TextBlock Text="제작" FontSize="10" Foreground="#60FFFFFF" Margin="0,10,0,0" HorizontalAlignment="Center" Cursor="Hand" MouseDown="TxtAbout_MouseDown"/>
             </StackPanel>
         </StackPanel>
     </Border>
